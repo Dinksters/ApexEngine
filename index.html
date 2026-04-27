@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apex Engine</title>
+    <style>
+        body { margin: 0; overflow: hidden; background: #000; font-family: 'Consolas', monospace; color: white;}
+        #ui { position: absolute; bottom: 20px; right: 20px; font-size: 2rem; font-weight: bold; text-shadow: 0 0 10px #0f0; }
+    </style>
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+                "cannon-es": "https://unpkg.com/cannon-es@0.20.0/dist/cannon-es.js"
+            }
+        }
+    </script>
+</head>
+<body>
+    <div id="ui">SPEED: <span id="speed">0</span> KM/H</div>
+    
+    <script type="module" src="./main.js"></script>
+</body>
+</html>
