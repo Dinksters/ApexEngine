@@ -1,4 +1,3 @@
-// main.js
 import { scene, camera, initGraphics, renderGraphics } from './Engine.js';
 import { world, groundMaterial, initPhysics, stepPhysics } from './Physics.js';
 import { inputs, initInput } from './Input.js';
