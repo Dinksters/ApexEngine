@@ -1,4 +1,3 @@
-// VFX.js\
 import * as THREE from 'three';\
 \
 const POOL_SIZE = 50;\
