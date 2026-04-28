@@ -1,4 +1,3 @@
-// UIManager.js\
 export let speedElement;\
 \
 export function initUI() \{\
