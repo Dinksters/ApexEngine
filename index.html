@@ -1,13 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Apex Engine</title>
-    <style>
-        body { margin: 0; overflow: hidden; background: #000; font-family: 'Consolas', monospace; color: white;}
-        #ui { position: absolute; bottom: 20px; right: 20px; font-size: 2rem; font-weight: bold; text-shadow: 0 0 10px #0f0; }
-    </style>
+    <style>body { margin: 0; overflow: hidden; background: #000; }</style>
     <script type="importmap">
         {
             "imports": {
@@ -18,8 +14,9 @@
     </script>
 </head>
 <body>
-    <div id="ui">SPEED: <span id="speed">0</span> KM/H</div>
-    
+    <div id="ui" style="position:absolute; bottom:20px; right:20px; color:#0f0; font-family:monospace; font-size:2rem;">
+        SPEED: <span id="speed">0</span> KM/H
+    </div>
     <script type="module" src="./main.js"></script>
 </body>
 </html>
