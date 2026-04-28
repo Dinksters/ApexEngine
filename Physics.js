@@ -1,4 +1,3 @@
-// Physics.js\
 import * as CANNON from 'cannon-es';\
 \
 export let world;\
