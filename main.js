@@ -8,7 +8,7 @@ import { initUI, updateUI } from './UIManager.js';
 import { initVFX, updateVFX } from './VFX.js';
 import { initAudio, updateAudio } from './Audio.js';
 
-let lastTime = performance.now();
+let lastTime = 0;
 
 function boot() {
     initGraphics();
@@ -22,22 +22,20 @@ function boot() {
     requestAnimationFrame(gameLoop);
 }
 
-function gameLoop(now) {
-    const dt = (now - lastTime) / 1000;
-    lastTime = now;
+function gameLoop(timestamp) {
+    const dt = Math.min((timestamp - lastTime) / 1000, 0.1); // Prevent huge jumps
+    lastTime = timestamp;
 
-    // Only update if the tab is active to save resources
-    if (dt < 0.2) {
-        updateInput(dt);
-        stepPhysics(dt);
-        updateVehicle(inputs);
-        updateCamera(camera, chassisBody, vehicle.chassisBody, dt);
-        updateVFX(vehicle, inputs, dt);
-        updateUI(chassisBody, inputs, vehicleStats);
-        updateAudio(chassisBody, inputs);
-    }
-
+    updateInput(dt);
+    stepPhysics(dt);
+    updateVehicle(inputs);
+    updateCamera(camera, chassisBody, vehicle.chassisBody, dt);
+    updateVFX(vehicle, inputs, dt);
+    updateUI(chassisBody, inputs, vehicleStats);
+    updateAudio(chassisBody, inputs);
+    
     renderGraphics();
+
     requestAnimationFrame(gameLoop);
 }
 
