@@ -1,4 +1,3 @@
-// Input.js\
 export const inputs = \{\
     forward: false,\
     reverse: false,\
