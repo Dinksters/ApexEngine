@@ -1,61 +1,52 @@
-let audioCtx;\
-let engineOsc;\
-let gainNode;\
-let isUnlocked = false;\
-\
-export function initAudio() \{\
-    console.log("Initializing Audio Engine...");\
-    \
-    // Listen for any keypress to unlock the audio (Browser Security Policy)\
-    window.addEventListener('keydown', unlockAudio, \{ once: true \});\
-\}\
-\
-function unlockAudio() \{\
-    if (isUnlocked) return;\
-    \
-    audioCtx = new (window.AudioContext || window.webkitAudioContext)();\
-    \
-    // Create a Sawtooth wave (sounds raspy like an engine)\
-    engineOsc = audioCtx.createOscillator();\
-    engineOsc.type = 'sawtooth';\
-    \
-    // Create a Lowpass filter to muffle it like an exhaust pipe\
-    const filter = audioCtx.createBiquadFilter();\
-    filter.type = 'lowpass';\
-    filter.frequency.value = 300; // Muffled bass\
-\
-    // Create volume control\
-    gainNode = audioCtx.createGain();\
-    gainNode.gain.value = 0.05; // Keep it quiet at first\
-\
-    // Wire it up: Oscillator -> Filter -> Volume -> Speakers\
-    engineOsc.connect(filter);\
-    filter.connect(gainNode);\
-    gainNode.connect(audioCtx.destination);\
-    \
-    engineOsc.frequency.value = 40; // Idle RPM\
-    engineOsc.start();\
-    \
-    isUnlocked = true;\
-    console.log("Audio Unlocked!");\
-\}\
-\
-export function updateAudio(chassisBody, inputs) \{\
-    if (!isUnlocked) return;\
-    \
-    const speed = chassisBody.velocity.length();\
-    \
-    // Calculate fake RPM\
-    let targetFreq = 40 + (speed * 1.5);\
-    \
-    // Make the engine rev higher when pressing the gas\
-    if (inputs.forward) \{\
-        targetFreq += 20; \
-        gainNode.gain.setTargetAtTime(0.1, audioCtx.currentTime, 0.1); // Louder\
-    \} else \{\
-        gainNode.gain.setTargetAtTime(0.05, audioCtx.currentTime, 0.1); // Quieter\
-    \}\
-\
-    // Smoothly transition pitch\
-    engineOsc.frequency.setTargetAtTime(targetFreq, audioCtx.currentTime, 0.1);\
-\}}
+let audioCtx;
+let engineOsc;
+let gainNode;
+let isUnlocked = false;
+
+export function initAudio() {
+    console.log("Initializing V8 Audio Engine...");
+    window.addEventListener('keydown', unlockAudio, { once: true });
+    window.addEventListener('mousedown', unlockAudio, { once: true });
+}
+
+function unlockAudio() {
+    if (isUnlocked) return;
+    
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    
+    engineOsc = audioCtx.createOscillator();
+    engineOsc.type = 'sawtooth';
+    
+    const filter = audioCtx.createBiquadFilter();
+    filter.type = 'lowpass';
+    filter.frequency.value = 300;
+
+    gainNode = audioCtx.createGain();
+    gainNode.gain.value = 0.05;
+
+    engineOsc.connect(filter);
+    filter.connect(gainNode);
+    gainNode.connect(audioCtx.destination);
+    
+    engineOsc.frequency.value = 40;
+    engineOsc.start();
+    
+    isUnlocked = true;
+    console.log("Audio Engine Live!");
+}
+
+export function updateAudio(chassisBody, inputs) {
+    if (!isUnlocked) return;
+    
+    const speed = chassisBody.velocity.length();
+    let targetFreq = 40 + (speed * 1.5);
+    
+    if (inputs.forward) {
+        targetFreq += 20; 
+        gainNode.gain.setTargetAtTime(0.1, audioCtx.currentTime, 0.1);
+    } else {
+        gainNode.gain.setTargetAtTime(0.05, audioCtx.currentTime, 0.1);
+    }
+
+    engineOsc.frequency.setTargetAtTime(targetFreq, audioCtx.currentTime, 0.1);
+}
