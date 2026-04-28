@@ -1,4 +1,3 @@
-// Engine.js\
 import * as THREE from 'three';
 
 export let scene, camera, renderer;
