@@ -19,4 +19,4 @@ function handleKey(key, isDown) {
     if (key === 'a' || key === 'arrowleft') inputs.left = isDown;
     if (key === 'd' || key === 'arrowright') inputs.right = isDown;
     if (key === ' ') inputs.brake = isDown;
-}}
+}
