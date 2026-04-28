@@ -2,8 +2,12 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Apex Engine</title>
-    <style>body { margin: 0; overflow: hidden; background: #000; }</style>
+    <title>Apex Engine: Overdrive</title>
+    <style>
+        body { margin: 0; overflow: hidden; background: #000; font-family: 'Courier New', monospace; }
+        #ui { position: absolute; bottom: 30px; right: 30px; color: #00ffcc; font-size: 2.5rem; font-weight: bold; text-align: right; pointer-events: none; }
+        #nitro { font-size: 1rem; color: #ff00ff; display: block; }
+    </style>
     <script type="importmap">
         {
             "imports": {
@@ -14,9 +18,10 @@
     </script>
 </head>
 <body>
-    <div id="ui" style="position:absolute; bottom:20px; right:20px; color:#0f0; font-family:monospace; font-size:2rem;">
-        SPEED: <span id="speed">0</span> KM/H
+    <div id="ui">
+        <span id="speed">0</span> KM/H
+        <span id="nitro">READY</span>
     </div>
-<script type="module" src="./main.js"></script>
+    <script type="module" src="./main.js"></script>
 </body>
 </html>
