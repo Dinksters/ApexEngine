@@ -1,13 +1,28 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Apex Engine: Overdrive</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>APEX ENGINE | 120Hz Pro-Spec</title>
     <style>
-        body { margin: 0; overflow: hidden; background: #000; font-family: 'Courier New', monospace; }
-        #ui { position: absolute; bottom: 30px; right: 30px; color: #00ffcc; font-size: 2.5rem; font-weight: bold; text-align: right; pointer-events: none; }
-        #nitro { font-size: 1rem; color: #ff00ff; display: block; }
+        body { margin: 0; padding: 0; overflow: hidden; background-color: #020205; }
+        
+        /* Loading/Start Overlay */
+        #overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(2, 2, 5, 0.9);
+            display: flex; flex-direction: column; justify-content: center;
+            align-items: center; z-index: 1000; color: #00ffcc;
+            font-family: 'Courier New', Courier, monospace;
+            cursor: pointer; transition: opacity 0.5s;
+        }
+        #overlay h1 { font-size: 3rem; letter-spacing: 10px; margin-bottom: 10px; }
+        #overlay p { font-size: 1rem; color: #fff; opacity: 0.7; }
+        
+        /* The UI Manager will inject styles here, but we define the container */
+        #hud-container { pointer-events: none; }
     </style>
+
     <script type="importmap">
         {
             "imports": {
@@ -18,10 +33,23 @@
     </script>
 </head>
 <body>
-    <div id="ui">
-        <span id="speed">0</span> KM/H
-        <span id="nitro">READY</span>
+
+    <div id="overlay">
+        <h1>APEX ENGINE</h1>
+        <p>CLICK TO IGNITE V8</p>
     </div>
+
+    <div id="hud-container"></div>
+
     <script type="module" src="./main.js"></script>
+
+    <script>
+        // Simple overlay removal on first click
+        const overlay = document.getElementById('overlay');
+        window.addEventListener('mousedown', () => {
+            overlay.style.opacity = '0';
+            setTimeout(() => overlay.style.display = 'none', 500);
+        }, { once: true });
+    </script>
 </body>
 </html>
