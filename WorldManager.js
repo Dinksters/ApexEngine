@@ -2,54 +2,45 @@ import * as THREE from 'three';
 import * as CANNON from 'cannon-es';
 
 export function buildWorld(scene, world) {
-    const buildingCount = 1000;
     const mapSize = 1000;
-
+    
+    // 1. Buildings (Instanced)
     const bldgGeo = new THREE.BoxGeometry(1, 1, 1);
-    const bldgMat = new THREE.MeshStandardMaterial({ 
-        color: 0x111122, 
-        roughness: 0.1, 
-        metalness: 0.8,
-        emissive: 0x00ffcc,
-        emissiveIntensity: 0.1 
-    });
-
-    const instancedMesh = new THREE.InstancedMesh(bldgGeo, bldgMat, buildingCount);
-    instancedMesh.castShadow = true;
-    instancedMesh.receiveShadow = true;
-
+    const bldgMat = new THREE.MeshStandardMaterial({ color: 0x111122, metalness: 0.9 });
+    const instancedMesh = new THREE.InstancedMesh(bldgGeo, bldgMat, 1000);
     const dummy = new THREE.Object3D();
 
-    let builtCount = 0;
-
-    for (let i = 0; i < buildingCount; i++) {
+    for (let i = 0; i < 1000; i++) {
         const x = (Math.random() - 0.5) * mapSize;
         const z = (Math.random() - 0.5) * mapSize;
+        if (Math.abs(x) < 40 && Math.abs(z) < 40) continue;
 
-        if (Math.abs(x) < 30 && Math.abs(z) < 30) continue;
-
-        const width = 5 + Math.random() * 15;
-        const depth = 5 + Math.random() * 15;
-        const height = 10 + Math.random() * 50;
-
-        dummy.position.set(x, height / 2, z);
-        dummy.scale.set(width, height, depth);
+        const w = 5 + Math.random() * 15, h = 10 + Math.random() * 60, d = 5 + Math.random() * 15;
+        dummy.position.set(x, h/2, z);
+        dummy.scale.set(w, h, d);
         dummy.updateMatrix();
-        instancedMesh.setMatrixAt(builtCount, dummy.matrix);
+        instancedMesh.setMatrixAt(i, dummy.matrix);
 
-        const bldgBody = new CANNON.Body({ mass: 0 });
-        const scaledShape = new CANNON.Box(new CANNON.Vec3(width / 2, height / 2, depth / 2));
-        bldgBody.addShape(scaledShape);
-        bldgBody.position.set(x, height / 2, z);
-        world.addBody(bldgBody);
-
-        builtCount++;
+        const body = new CANNON.Body({ mass: 0 });
+        body.addShape(new CANNON.Box(new CANNON.Vec3(w/2, h/2, d/2)));
+        body.position.set(x, h/2, z);
+        world.addBody(body);
     }
-
-    instancedMesh.count = builtCount;
     scene.add(instancedMesh);
 
+    // 2. Neon Streetlights
+    for (let i = 0; i < 50; i++) {
+        const light = new THREE.PointLight(i % 2 === 0 ? 0x00ffcc : 0xff00ff, 50, 40);
+        const lx = (Math.random()-0.5)*400, lz = (Math.random()-0.5)*400;
+        light.position.set(lx, 5, lz);
+        scene.add(light);
+        
+        // Visual Pole
+        const pole = new THREE.Mesh(new THREE.BoxGeometry(0.5, 10, 0.5), new THREE.MeshBasicMaterial({color: 0x222222}));
+        pole.position.set(lx, 5, lz);
+        scene.add(pole);
+    }
+
     const grid = new THREE.GridHelper(mapSize, 100, 0x00ffcc, 0x222222);
-    grid.position.y = 0.01;
     scene.add(grid);
 }
