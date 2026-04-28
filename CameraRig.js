@@ -1,4 +1,3 @@
-// CameraRig.js\
 import * as THREE from 'three';\
 \
 const offsetVector = new THREE.Vector3();\
